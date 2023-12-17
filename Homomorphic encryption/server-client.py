@@ -23,11 +23,13 @@ client.send_string("Received")#telling server that we received message
 stringContext=json.loads(jsonMessage)
 stringCx=json.loads(jsonMessage)
 
-bajtContext=stringContext['context'].encode('utf-8')
-cx=stringContext['cx'].encode('utf-8')
+bajtContext=stringContext['context'].encode('cp437')
+#cx=stringContext['cx'].encode('cp437')
 
 HE_server = Pyfhel()
 HE_server.from_bytes_context(bajtContext)
+
+cx=PyCtxt(pyfhel=HE_server, bytestring=stringContext['cx'].encode('cp437'))
 
 nova_placa = cx + HE_server.encode(np.array([200]))
 nova_placa *= HE_server.encode(np.array([1.2]))
