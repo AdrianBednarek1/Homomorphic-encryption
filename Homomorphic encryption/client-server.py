@@ -40,11 +40,11 @@ HE_server.from_bytes_context(s_context)
 context = zmq.Context()
 #Creating server
 server = context.socket(zmq.REP)
-server.bind("tcp://192.168.100.5:5555")
+server.bind("tcp://10.0.2.15:5555")
 
 #Creating client
 client = context.socket(zmq.REQ)
-server.connect("tcp://localhost:5554")
+client.connect("tcp://localhost:5554")
 
 #listening as server and sening rep
 while True:
@@ -62,13 +62,12 @@ print("Sending request")
 client.send_string("Send message")
 
 #receiving encrypted message 
-jsonMessage = client.recv_json()
+jsonMessage = client.recv_string()
 print("Received message")
 client.send_string("Received")
 
 #decryption
-stringMessage = json.loads(jsonMessage)
-cxMessage= stringMessage['cx'].encode('utf-8')
+cxMessage= PyCtxt(pyfhel=HE_server, bytestring=jsonMessage.encode('cp437'))
 res = HE_client.decryptFrac(cxMessage)[0]
 
 print(f"[Client] Response received! Result is {np.round(res, 4)}, should be {1200 * 1.2}")

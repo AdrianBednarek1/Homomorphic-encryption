@@ -10,7 +10,7 @@ server.bind("tcp://*:5554")
 
 #Creating client
 client = context.socket(zmq.REQ)
-client.connect("tcp://192.168.100.5:5555")
+client.connect("tcp://10.0.2.15:5555")
 
 #client sending req and receiving rep
 print("Sending request")
@@ -31,9 +31,12 @@ HE_server.from_bytes_context(bajtContext)
 
 cx=PyCtxt(pyfhel=HE_server, bytestring=stringContext['cx'].encode('cp437'))
 
+print(f'Created PyCtxt')
+
 nova_placa = cx + HE_server.encode(np.array([200]))
 nova_placa *= HE_server.encode(np.array([1.2]))
 
+print(f'Prefomed transformation')
 #listening as server and sening rep
 while True:
     #receiving req
@@ -42,5 +45,5 @@ while True:
 
     time.sleep(1)
 
-    server.send(cx)
+    server.send_string(nova_placa.to_bytes().decode('cp437'))
     if(message=="Received"):break
