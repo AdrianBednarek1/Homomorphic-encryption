@@ -2,12 +2,12 @@ import zmq, json, time, pickle, sys
 import numpy as np
 from Pyfhel import Pyfhel, PyCtxt, PyPtxt
 
-n_mults = 3
+n_mults = 2
 HE_client = Pyfhel(key_gen=True, context_params ={
     'scheme': 'CKKS',
     'n': 2**14,
     'scale': 2**30,
-    'qi_sizes': [30] * (n_mults)
+    'qi_sizes': [60]+[30] * (n_mults)+[60]
 })
 
 print("Generating private keys")
@@ -25,11 +25,11 @@ s_context    = HE_client.to_bytes_context()
 #s_public_key = HE_client.to_bytes_public_key()
 #s_relin_key  = HE_client.to_bytes_relin_key()
 #s_rotate_key = HE_client.to_bytes_rotate_key()
-#s_cx         = cx.to_bytes()
+s_cx         = cx.to_bytes()
 
 #preparing json message for sending
-stringCx= str(cx)
-stringContext = str(s_context)
+stringCx= s_cx.decode('cp437')
+stringContext = s_context.decode('cp437')
 js=json.dumps({"context":stringContext,"cx":stringCx})
 
 print("Creating public keys")
