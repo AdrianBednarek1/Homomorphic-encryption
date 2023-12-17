@@ -6,11 +6,11 @@ from Pyfhel import Pyfhel, PyCtxt, PyPtxt
 context = zmq.Context()
 #Creating server
 server = context.socket(zmq.REP)
-server.bind("tcp://*:5554")
+server.bind("tcp://192.168.100.5:5554")
 
 #Creating client
 client = context.socket(zmq.REQ)
-client.connect("tcp://10.0.2.15:5555")
+client.connect("tcp://192.168.100.5:5555")
 
 #client sending req and receiving rep
 print("Sending request")
@@ -18,13 +18,13 @@ client.send_string("Send message")
 
 jsonMessage = client.recv_json()
 print("Received message ")
-client.send_string("Received")#telling server that we received message
+#telling server that we received message
+client.send_string("Received")
 
 stringContext=json.loads(jsonMessage)
 stringCx=json.loads(jsonMessage)
 
 bajtContext=stringContext['context'].encode('cp437')
-#cx=stringContext['cx'].encode('cp437')
 
 HE_server = Pyfhel()
 HE_server.from_bytes_context(bajtContext)
@@ -34,7 +34,7 @@ cx=PyCtxt(pyfhel=HE_server, bytestring=stringContext['cx'].encode('cp437'))
 print(f'Created PyCtxt')
 
 nova_placa = cx + HE_server.encode(np.array([200]))
-nova_placa *= HE_server.encode(np.array([1.2]))
+nova_placa *= HE_server.encode(np.array([1.5]))
 
 print(f'Prefomed transformation')
 #listening as server and sening rep
