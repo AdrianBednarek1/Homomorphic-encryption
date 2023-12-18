@@ -32,11 +32,11 @@ js=json.dumps({"context":stringContext,"cx":stringCx})
 context = zmq.Context()
 #Creating server
 server = context.socket(zmq.REP)
-server.bind("tcp://192.168.100.5:5555")
+server.bind("tcp://192.168.100.6:5555")
 
 #Creating client
 client = context.socket(zmq.REQ)
-client.connect("tcp://192.168.100.5:5554")
+client.connect("tcp://192.168.100.7:5554")
 
 #listening as server and sening rep
 while True:
