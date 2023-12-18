@@ -1,4 +1,4 @@
-import zmq, json, time, pickle
+import zmq, json, time
 import numpy as np
 from Pyfhel import Pyfhel, PyCtxt, PyPtxt
 
@@ -6,11 +6,11 @@ from Pyfhel import Pyfhel, PyCtxt, PyPtxt
 context = zmq.Context()
 #Creating server
 server = context.socket(zmq.REP)
-server.bind("tcp://192.168.100.5:5554")
+server.bind("tcp://192.168.100.7:5554")
 
 #Creating client
 client = context.socket(zmq.REQ)
-client.connect("tcp://192.168.100.5:5555")
+client.connect("tcp://192.168.100.6:5555")
 
 #client sending req and receiving rep
 print("Sending request")
